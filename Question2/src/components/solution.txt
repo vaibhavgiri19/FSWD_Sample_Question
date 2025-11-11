@@ -1,0 +1,104 @@
+✅ Solution for Digital Library Catalog System
+
+📁 File: src/App.jsx
+----------------------------------------
+import BookCard from './components/BookCard';
+
+function App() {
+  // Define books array
+  const books = [
+    {
+      id: 1,
+      title: "The Great Gatsby",
+      author: "F. Scott Fitzgerald",
+      year: 1925,
+      genre: "Fiction",
+      isAvailable: true
+    },
+    {
+      id: 2,
+      title: "To Kill a Mockingbird",
+      author: "Harper Lee",
+      year: 1960,
+      genre: "Classic",
+      isAvailable: false
+    },
+    {
+      id: 3,
+      title: "1984",
+      author: "George Orwell",
+      year: 1949,
+      genre: "Dystopian",
+      isAvailable: true
+    },
+    {
+      id: 4,
+      title: "The Hobbit",
+      author: "J.R.R. Tolkien",
+      year: 1937,
+      genre: "Fantasy",
+      isAvailable: false
+    },
+    {
+      id: 5,
+      title: "The Alchemist",
+      author: "Paulo Coelho",
+      year: 1988,
+      genre: "Adventure",
+      isAvailable: true
+    }
+  ];
+
+  return (
+    <div>
+      <h1>Library Catalog</h1>
+      <div className="book-catalog">
+        {/* Render all BookCards using map() */}
+        {books.map((book) => (
+          <BookCard
+            key={book.id}
+            title={book.title}
+            author={book.author}
+            year={book.year}
+            genre={book.genre}
+            isAvailable={book.isAvailable}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+📁 File: src/components/BookCard.jsx
+----------------------------------------
+import React from 'react';
+
+function BookCard({ title, author, year, genre, isAvailable }) {
+  return (
+    <div className="book-card">
+      {/* Display book title */}
+      <h3>{title}</h3>
+
+      {/* Display author */}
+      <p>by {author}</p>
+
+      {/* Display publication year */}
+      <p>({year})</p>
+
+      {/* Display genre */}
+      <p>Genre: {genre}</p>
+
+      {/* Conditional rendering for availability */}
+      {isAvailable ? (
+        <p className="status-available">Available</p>
+      ) : (
+        <p className="status-unavailable">Checked Out</p>
+      )}
+    </div>
+  );
+}
+
+export default BookCard;
