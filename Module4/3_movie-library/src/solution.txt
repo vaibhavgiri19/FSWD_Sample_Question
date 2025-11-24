@@ -1,0 +1,97 @@
+MovieCard.jsx (Solution)
+
+import React from "react";
+
+function MovieCard({ title, director, year, genre, isAvailable }) {
+  return (
+    <div className="movie-card">
+      <h3>{title}</h3>
+      <p>Director: {director}</p>
+      <p>Year: {year}</p>
+      <p>Genre: {genre}</p>
+
+      {isAvailable ? (
+        <p className="status-available">Available</p>
+      ) : (
+        <p className="status-unavailable">Unavailable</p>
+      )}
+    </div>
+  );
+}
+
+export default MovieCard;
+
+
+
+
+App.jsx (Solution)
+
+import React from "react";
+import MovieCard from "./components/MovieCard";
+
+function App() {
+
+  const movies = [
+    {
+      id: 1,
+      title: "Inception",
+      director: "Christopher Nolan",
+      year: 2010,
+      genre: "Sci-Fi",
+      isAvailable: true
+    },
+    {
+      id: 2,
+      title: "Interstellar",
+      director: "Christopher Nolan",
+      year: 2014,
+      genre: "Sci-Fi",
+      isAvailable: false
+    },
+    {
+      id: 3,
+      title: "Avatar",
+      director: "James Cameron",
+      year: 2009,
+      genre: "Fantasy",
+      isAvailable: true
+    },
+    {
+      id: 4,
+      title: "The Dark Knight",
+      director: "Christopher Nolan",
+      year: 2008,
+      genre: "Action",
+      isAvailable: false
+    },
+    {
+      id: 5,
+      title: "Titanic",
+      director: "James Cameron",
+      year: 1997,
+      genre: "Drama",
+      isAvailable: true
+    }
+  ];
+
+  return (
+    <div>
+      <h1>Movie Library Catalog</h1>
+
+      <div className="movie-grid">
+        {movies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            title={movie.title}
+            director={movie.director}
+            year={movie.year}
+            genre={movie.genre}
+            isAvailable={movie.isAvailable}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;
