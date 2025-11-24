@@ -1,0 +1,113 @@
+import React, { useState } from 'react';
+
+const initialNotes = [
+  { id: 1, text: 'Read chapter 5' },
+  { id: 2, text: 'Prepare meeting summary' },
+  { id: 3, text: 'Plan weekend schedule' },
+];
+
+function App() {
+  const [notes, setNotes] = useState(initialNotes);
+  const [editingNote, setEditingNote] = useState(null);
+  const [editText, setEditText] = useState('');
+  const [noteToDelete, setNoteToDelete] = useState(null);
+
+  // ✅ Handle edit click
+  const handleEditClick = (note) => {
+    setEditingNote(note);
+    setEditText(note.text);
+  };
+
+  // ✅ Save edited note
+  const handleSave = () => {
+    if (!editText.trim()) return;
+
+    const updatedNotes = notes.map((n) =>
+      n.id === editingNote.id ? { ...n, text: editText } : n
+    );
+
+    setNotes(updatedNotes);
+    setEditingNote(null);
+    setEditText('');
+  };
+
+  // ✅ Cancel edit
+  const handleCancelEdit = () => {
+    setEditingNote(null);
+    setEditText('');
+  };
+
+  // ✅ Delete click
+  const handleDeleteClick = (note) => {
+    setNoteToDelete(note);
+  };
+
+  // ✅ Confirm delete
+  const handleConfirmDelete = () => {
+    const updatedNotes = notes.filter((n) => n.id !== noteToDelete.id);
+
+    setNotes(updatedNotes);
+    setNoteToDelete(null);
+  };
+
+  // ✅ Cancel delete
+  const handleCancelDelete = () => {
+    setNoteToDelete(null);
+  };
+
+  return (
+    <div>
+      <h1>My Notes</h1>
+
+      {notes.map((note) => (
+        <div
+          key={note.id}
+          style={{ border: "1px solid black", margin: "8px", padding: "8px" }}
+        >
+          {editingNote && editingNote.id === note.id ? (
+            <div>
+              <input
+                type="text"
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+              />
+              <button onClick={handleSave}>Save</button>
+              <button onClick={handleCancelEdit}>Cancel</button>
+            </div>
+          ) : (
+            <div>
+              <p>{note.text}</p>
+              <button onClick={() => handleEditClick(note)}>Edit</button>
+              <button onClick={() => handleDeleteClick(note)}>Delete</button>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {noteToDelete && (
+        <div
+          style={{
+            marginTop: "16px",
+            padding: "8px",
+            border: "1px solid red",
+          }}
+        >
+          <p>
+            Are you sure you want to delete "{noteToDelete.text}"?
+          </p>
+          <button
+            onClick={handleConfirmDelete}
+            style={{ backgroundColor: "red", color: "white" }}
+          >
+            Confirm
+          </button>
+          <button onClick={handleCancelDelete} style={{ marginLeft: "8px" }}>
+            Cancel
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

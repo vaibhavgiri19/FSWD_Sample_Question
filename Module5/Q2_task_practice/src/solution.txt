@@ -1,0 +1,101 @@
+import React, { useState } from 'react';
+
+const initialTasks = [
+  { id: 1, title: 'Finish React homework' },
+  { id: 2, title: 'Buy groceries' },
+  { id: 3, title: 'Prepare for presentation' },
+];
+
+function App() {
+  const [tasks, setTasks] = useState(initialTasks);
+  const [editingTask, setEditingTask] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // ✅ Handle Edit button click
+  const handleEditClick = (task) => {
+   setEditingTask(task);          // Set current task in edit mode
+    setEditTitle(task.title);      // Pre-fill current title in input
+  };
+
+  // ✅ Handle Save after editing
+  const handleSave = () => {
+    if (!editTitle.trim()) return; // Prevent empty titles
+
+    // Update task title in tasks array
+    const updatedTasks = tasks.map((t) =>
+      t.id === editingTask.id ? { ...t, title: editTitle } : t
+    );
+
+    setTasks(updatedTasks);
+    setEditingTask(null);  // Exit edit mode
+    setEditTitle('');      // Reset edit input
+  };
+
+  // ✅ Handle Cancel edit
+  const handleCancelEdit = () => {
+    setEditingTask(null);  // Exit edit mode
+    setEditTitle('');      // Clear edit input
+  };
+
+  // ✅ Handle Delete button click
+  const handleDeleteClick = (task) => {
+    setTaskToDelete(task);  // Store task to be deleted
+  };
+
+  // ✅ Confirm Delete
+  const handleConfirmDelete = () => {
+    const updatedTasks = tasks.filter((t) => t.id !== taskToDelete.id);
+    setTasks(updatedTasks);
+    setTaskToDelete(null);  // Close confirmation box
+  };
+
+  // ✅ Cancel Delete
+  const handleCancelDelete = () => {
+    setTaskToDelete(null);  // Close confirmation box
+
+
+};
+
+  return (
+    <div>
+      <h1>My Task List</h1>
+      {tasks.map((task) => (
+        <div
+          key={task.id}
+          style={{ border: '1px solid black', margin: '8px', padding: '8px' }}
+        >
+          {editingTask && editingTask.id === task.id ? (
+            <div>
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+              />
+              <button onClick={handleSave}>Save</button>
+              <button onClick={handleCancelEdit}>Cancel</button>
+            </div>
+          ) : (
+            <div>
+              <p>{task.title}</p>
+              <button onClick={() => handleEditClick(task)}>Edit</button>
+              <button onClick={() => handleDeleteClick(task)}>Delete</button>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {taskToDelete && (
+        <div style={{ marginTop: '16px', padding: '8px', border: '1px solid red' }}>
+          <p>Are you sure you want to delete "{taskToDelete.title}"?</p>
+          <button onClick={handleConfirmDelete}>Confirm</button>
+          <button onClick={handleCancelDelete}>Cancel</button>
+        </div>
+      )}
+
+
+   </div>
+  );
+}
+
+export default App;
