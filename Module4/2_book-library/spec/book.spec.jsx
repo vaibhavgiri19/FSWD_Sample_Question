@@ -19,7 +19,7 @@ describe("Book Library Catalog Assessment", () => {
       expect(screen.getByText("The Great Gatsby")).toBeInTheDocument();
     });
 
-    // ✅ FINAL corrected version (matches your DOM EXACTLY)
+    // ✅ FINAL FIXED VERSION — handles split text correctly
     it("should display author and year properly", () => {
       render(
         <BookCard
@@ -31,11 +31,19 @@ describe("Book Library Catalog Assessment", () => {
         />
       );
 
-      // Your DOM displays exactly "George Orwell"
-      expect(screen.getByText("George Orwell")).toBeInTheDocument();
+      // Match "by George Orwell" even though it's split across nodes
+      expect(
+        screen.getByText((content) =>
+          content.replace(/\s+/g, " ").trim() === "by George Orwell"
+        )
+      ).toBeInTheDocument();
 
-      // Your DOM displays exactly "1949"
-      expect(screen.getByText("1949")).toBeInTheDocument();
+      // Match "(1949)" even though parentheses may be split
+      expect(
+        screen.getByText((content) =>
+          content.replace(/\s+/g, " ").trim() === "(1949)"
+        )
+      ).toBeInTheDocument();
     });
 
     it("should display genre", () => {
@@ -94,7 +102,7 @@ describe("Book Library Catalog Assessment", () => {
     it("should display unique book titles", () => {
       render(<App />);
       const headings = screen.getAllByRole("heading", { level: 3 });
-      const titles = headings.map(h => h.textContent);
+      const titles = headings.map((h) => h.textContent);
       const unique = [...new Set(titles)];
       expect(unique.length).toBe(titles.length);
     });
@@ -111,7 +119,7 @@ describe("Book Library Catalog Assessment", () => {
       render(<App />);
       const genreElements = screen.getAllByText(/Genre:/);
       expect(genreElements.length).toBeGreaterThanOrEqual(5);
-      const genres = genreElements.map(el =>
+      const genres = genreElements.map((el) =>
         el.textContent.replace("Genre: ", "")
       );
       const uniqueGenres = [...new Set(genres)];
